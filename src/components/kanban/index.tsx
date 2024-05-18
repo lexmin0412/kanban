@@ -1,163 +1,70 @@
-import {useState} from "react";
+import {Button, Tag} from "antd";
+import {useEffect, useState} from "react";
 import {DndAnythingMultiple} from "react-dnd-anything";
+import {PlusCircleOutlined} from "@ant-design/icons";
 
-const defaultList = [
-  {
-    id: "1",
-    title: "item 1",
-  },
-  {
-    id: "2",
-    title: "item 2",
-  },
-  {
-    id: "3",
-    title: "item 3",
-  },
-  {
-    id: "4",
-    title: "item 4",
-  },
-  {
-    id: "5",
-    title: "item 5",
-  },
-  {
-    id: "6",
-    title: "item 6",
-  },
-  {
-    id: "7",
-    title: "item 7",
-  },
-  {
-    id: "8",
-    title: "item 8",
-  },
-  {
-    id: "9",
-    title: "item 9",
-  },
-  {
-    id: "10",
-    title: "item 10",
-  },
-  {
-    id: "11",
-    title: "item 11",
-  },
-  {
-    id: "12",
-    title: "item 12",
-  },
-  {
-    id: "13",
-    title: "item 13",
-  },
-];
+interface KanbanProps {
+  data: {
+    id: string;
+    name: string;
+    items: Array<{
+      id: string;
+      title: string;
+    }>;
+  }[];
+}
 
-const defaultList2 = [
-  {
-    id: "1-1",
-    title: "item 1-1",
-  },
-  {
-    id: "2-1",
-    title: "item 2",
-  },
-  {
-    id: "3-1",
-    title: "item 3",
-  },
-  {
-    id: "4-1",
-    title: "item 4",
-  },
-  {
-    id: "5-1",
-    title: "item 5",
-  },
-  {
-    id: "6-1",
-    title: "item 6",
-  },
-  {
-    id: "7-1",
-    title: "item 7",
-  },
-  {
-    id: "8-1",
-    title: "item 8",
-  },
-  {
-    id: "9-1",
-    title: "item 9",
-  },
-  {
-    id: "10-1",
-    title: "item 10",
-  },
-  {
-    id: "11-1",
-    title: "item 11",
-  },
-  {
-    id: "12-1",
-    title: "item 12",
-  },
-  {
-    id: "13-1",
-    title: "item 13",
-  },
-];
+export default (props: KanbanProps) => {
+  const [dataGroup, setDataGroup] = useState<any[]>([]);
 
-export default () => {
-  const [dataGroup, setDataGroup] = useState([
-    {
-      id: "data1",
-      list: defaultList,
-    },
-    {
-      id: "data2",
-      list: defaultList2,
-    },
-  ]);
+  useEffect(() => {
+    setDataGroup(
+      props.data?.map((item) => {
+        return {
+          id: item.id,
+          list: item.items.map((child) => {
+            return {
+              id: child.id,
+              title: child.title,
+            };
+          }),
+        };
+      })
+    );
+  }, [props.data]);
 
   return (
-    <div>
-      <DndAnythingMultiple
-        style={{
-          // border: "1px solid black",
-          marginBottom: "20px",
-          padding: "20px",
-        }}
-        wrapperClassName="flex items-center"
-        containerClassName="w-60 mr-4 bg-[#F4F5F7] rounded-xl"
-        renderChildren={(item, {isDragging, isDraggingOver}) => {
-          return (
-            <div
-              className="rounded shadow-slate-400 bg-white mb-2 p-2"
-              // style={{
-              //   display: "flex",
-              //   padding: "10px",
-              //   height: "20px",
-              //   lineHeight: "20px",
-              //   margin: "0 10px 10px",
-              //   borderRadius: "6px",
-              //   background: "#2688fa",
-              //   color: "#fff",
-              //   opacity: isDragging ? 0.7 : 1,
-              //   borderLeft: isDraggingOver ? "10px solid #ff4a4a" : 0,
-              // }}
-            >
+    <DndAnythingMultiple
+      style={{
+        // border: "1px solid black",
+        boxSizing: "border-box",
+        marginBottom: "20px",
+        padding: "20px",
+      }}
+      wrapperClassName="flex items-start h-full"
+      containerClassName="w-72 mr-4 bg-[#F4F5F7] rounded-xl h-full overflow-auto border-box"
+      renderChildren={(item, {isDragging, isDraggingOver}) => {
+        return (
+          <div
+            onClick={() => {
+              console.log("item", item);
+            }}
+            className="rounded w- shadow-slate-400 bg-white mb-2 p-2 text-sm"
+          >
+            <div className="two-line-ellipsis font-semibold h-10">
               {item.title}
             </div>
-          );
-        }}
-        direction="vertical"
-        dataGroup={dataGroup}
-        onDataGroupChange={(dataGroup) => setDataGroup(dataGroup)}
-      />
-    </div>
+            <div className="h-7 leading-7 flex items-center">
+              {item.repoName ? (
+                <Tag className="mt-2">{item.repoName}</Tag>
+              ) : null}
+            </div>
+          </div>
+        );
+      }}
+      direction="vertical"
+      dataGroup={dataGroup}
+      onDataGroupChange={(dataGroup) => setDataGroup(dataGroup)}
+    />
   );
 };
