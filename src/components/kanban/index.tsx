@@ -1,7 +1,6 @@
-import {Button, Tag} from "antd";
+import {Tag} from "antd";
 import {useEffect, useState} from "react";
 import {DndAnythingMultiple} from "react-dnd-anything";
-import {PlusCircleOutlined} from "@ant-design/icons";
 
 interface KanbanProps {
   data: {
@@ -43,7 +42,7 @@ export default (props: KanbanProps) => {
       }}
       wrapperClassName="flex items-start h-full"
       containerClassName="w-72 mr-4 bg-[#F4F5F7] rounded-xl h-full overflow-auto border-box"
-      renderChildren={(item, {isDragging, isDraggingOver}) => {
+      renderChildren={(item) => {
         return (
           <div
             onClick={() => {
