@@ -1,44 +1,21 @@
-import { useRequest } from 'ahooks'
-import { Button, message } from 'antd'
+import { Kanban } from "../../components";
+import { Tabs } from "antd";
+import { useState } from "react";
 
-function Home() {
-	const {
-		loading: fetchLoading,
-		runAsync: handleFakeFetch
-	} = useRequest(
-    () => {
-      return fetch(window.location.href).then((res) => {
-        return res.text();
-      });
-    },
-    {
-			manual: true,
-      onSuccess: (res) => {
-        console.log("请求结果", res);
-				message.success('请求成功')
-      },
-    }
-  );
+export default function() {
 
-  return (
-    <>
-      <div className="m-3">
-        <Button loading={fetchLoading} onClick={handleFakeFetch}>
-          点击请求
-        </Button>
-      </div>
-      <div className="m-3">
-        <Button>
-          <a href="/react-template/about">路由切换</a>
-        </Button>
-      </div>
-      <div className="m-3">
-        <Button>
-          <a href="/react-template/antd-demo">AntD Demo</a>
-        </Button>
-      </div>
-    </>
+	const [currentTab, setCurrentTab] = useState('1');
+
+	return (
+    <div className="px-4">
+      <Tabs centered
+				activeKey={currentTab}
+				onChange={(key) => setCurrentTab(key)}
+			>
+        <Tabs.TabPane tab="看板" key="1"></Tabs.TabPane>
+        <Tabs.TabPane tab="列表" key="2"></Tabs.TabPane>
+      </Tabs>
+			<Kanban />
+    </div>
   );
 }
-
-export default Home;

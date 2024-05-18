@@ -15,6 +15,7 @@
     "antd": "^5.12.8",
     "dayjs": "^1.11.9",
     "react": "^18.2.0",
+    "react-dnd-anything": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0"
   },
@@ -41,6 +42,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.6.2",
     "jest-environment-jsdom": "^29.6.2",
+    "less": "^4.2.0",
     "postcss": "^8.4.28",
     "tailwindcss": "^3.3.3",
     "ts-node": "^10.9.1",
