@@ -1,6 +1,7 @@
 export interface DataItem {
 	id: string;
 	title: string;
+	expected_end_at: string;
 }
 
 export type DataList = {

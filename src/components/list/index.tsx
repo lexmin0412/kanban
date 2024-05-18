@@ -1,11 +1,10 @@
+import {DataList} from "@/types";
+
 interface ListProps {
-  data: any[];
+  data: DataList;
 }
 
 export default function List(props: ListProps) {
-
-	console.log(props.data, 111);
-
   return (
     <div className="w-full px-20">
       <div className="mb-2 text-base flex items-center font-semibold border-b border-b-slate-700 border-solid border-x-0 border-t-0 pb-2">
