@@ -14,14 +14,14 @@ export const CreateModal = (props: ICreateModalProps) => {
 
   const init = async () => {
     const res = await ossClient?.listGroup();
-    setGroupOptions(res);
+    setGroupOptions(res!);
   };
 
   useEffect(() => {
     init();
   }, [ossClient]);
 
-  const handleOk = async (e) => {
+  const handleOk = async (e: any) => {
     console.log("handleOk", form.getFieldsValue());
 
     const {title, description, expected_end_at, groupID} =

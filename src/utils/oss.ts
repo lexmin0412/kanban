@@ -51,6 +51,7 @@ class OssClient {
 		const data = JSON.parse(res.content.toString()).data
 		const newData = [...data, newItem]
 		console.log('newData', newData)
+		// @ts-ignore
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
 			data: newData
 		}, null, 2)))
@@ -68,6 +69,7 @@ class OssClient {
 			}
 			return item
 		})
+		// @ts-ignore
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
 			data: newData
 		}, null, 2)))
@@ -75,8 +77,7 @@ class OssClient {
 
 	async addItem(newItem: DataItem, groupID?: string) {
 		const res = await this.getList()
-		const data = JSON.parse(res.content.toString()).data
-		console.log('groupID', groupID, data)
+		const data: DataList = JSON.parse(res.content.toString()).data
 		const newData = data.map((item)=>{
 			if (item.id === groupID) {
 				return {
@@ -90,6 +91,7 @@ class OssClient {
 			return item
 		})
 		console.log('newData', newData)
+		// @ts-ignore
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
 			data: newData
 		}, null, 2)))
@@ -114,6 +116,7 @@ class OssClient {
 			}
 		})
 		console.log('newData', newData)
+		// @ts-ignore
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
 			data: newData
 		}, null, 2)))
@@ -131,6 +134,7 @@ class OssClient {
 			}
 		})
 		console.log('newData', newData)
+		// @ts-ignore
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
 			data: newData
 		}, null, 2)))
