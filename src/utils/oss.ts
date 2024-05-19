@@ -1,5 +1,6 @@
-import { DataItem } from "@/types";
+import { DataItem, DataList, GroupItem } from "@/types";
 import OSS from "ali-oss";
+import { DefaultOptionType } from "antd/es/select";
 
 export interface OssClientInitProps {
 	region: string;
@@ -29,67 +30,110 @@ class OssClient {
 		})
 	}
 
-	async add(newItem: {
-		id: string
-		title: string
-		date: string
-		tags: string[]
-	}) {
+	/**
+	 * 列出分组
+	 */
+	listGroup(): Promise<DefaultOptionType[]> {
+		return this.getList().then(res => {
+			const data: DataList = JSON.parse(res.content.toString()).data;
+			console.log('shit111', data)
+			return data.map((item) => {
+				return {
+					value: item.id,
+					label: item.title
+				}
+			});
+		})
+	}
+
+	async addGroup(newItem: GroupItem) {
 		const res = await this.getList()
-		const events = JSON.parse(res.content.toString()).events
-		const newEvents = [
-			...events,
-			newItem
-		]
-		console.log('hahaha', newEvents)
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
+		const data = JSON.parse(res.content.toString()).data
+		const newData = [...data, newItem]
+		console.log('newData', newData)
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
-			events: newEvents
+			data: newData
 		}, null, 2)))
 	}
 
-	async update(id: string, newValues: Omit<DataItem, 'id'>) {
+	async updateGroup(newItem: GroupItem) {
 		const res = await this.getList()
-		const events = JSON.parse(res.content.toString()).events
-		const newEvents = events.map((item: DataItem) => {
-			if (item.id === id) {
+		const data: DataList = JSON.parse(res.content.toString()).data
+		const newData = data.map((item)=>{
+			if (item.id === newItem.id) {
 				return {
 					...item,
-					...newValues
+					...newItem,
 				}
 			}
 			return item
 		})
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
-			events: newEvents
+			data: newData
 		}, null, 2)))
 	}
 
-	async delete(id: string) {
+	async addItem(newItem: DataItem, groupID?: string) {
 		const res = await this.getList()
-		const events = JSON.parse(res.content.toString()).events
-
-		const newEvents = events.filter((item: DataItem) => item.id !== id)
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
+		const data = JSON.parse(res.content.toString()).data
+		console.log('groupID', groupID, data)
+		const newData = data.map((item)=>{
+			if (item.id === groupID) {
+				return {
+					...item,
+					items: [
+						...(item.items || []),
+						newItem
+					]
+				}
+			}
+			return item
+		})
+		console.log('newData', newData)
 		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
-			events: newEvents
+			data: newData
 		}, null, 2)))
 	}
 
-	/**
-	 * 查询详情
-	 * @param id 故事id
-	 */
-	async getDetail(id: string) {
+	async updateItem(newItem: DataItem) {
 		const res = await this.getList()
-		const events = JSON.parse(res.content.toString()).events
+		const data: DataList = JSON.parse(res.content.toString()).data
+		const newData = data.map((item) => {
+			return {
+				...item,
+				items: item.items?.map((child)=>{
+					if (child.id === newItem.id) {
+						return {
+							...child,
+							...newItem
+						}
+					} else {
+						return child
+					}
+				})
+			}
+		})
+		console.log('newData', newData)
+		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
+			data: newData
+		}, null, 2)))
+	}
 
-		const detail = events.find((item: DataItem) => item.id === id)
-		return detail
+	async deleteItem(id: string) {
+		const res = await this.getList()
+		const data: DataList = JSON.parse(res.content.toString()).data
+		const newData = data.map((item) => {
+			return {
+				...item,
+				items: item.items?.filter((child) => {
+					return child.id !== id
+				})
+			}
+		})
+		console.log('newData', newData)
+		return this.store.put(`/apis/kanban/data.json`, new OSS.Buffer(JSON.stringify({
+			data: newData
+		}, null, 2)))
 	}
 }
 
