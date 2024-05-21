@@ -24,8 +24,8 @@ dependencies:
     specifier: ^18.2.0
     version: 18.2.0
   react-dnd-anything:
-    specifier: ^1.4.0
-    version: 1.4.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.5.0
+    version: 1.5.0(react-dom@18.2.0)(react@18.2.0)
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
@@ -6525,8 +6525,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-dnd-anything@1.4.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-QVv4X/oGYSZ8/c6dhLvo+cq7EXIHUZzr8s1czoq9UBux6aaSQzL14GgOKGlg3jl4C18o2Xs0HJUvBEz9C/FMjg==}
+  /react-dnd-anything@1.5.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Jz7XCo90cIm8LPGJANlIOsjiVEWjmPl2bHeuugHjrRcM3qGI9H0BmM3n4n1BGZ7emHkVIhnlx0Z4BUzNn9ILJg==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'

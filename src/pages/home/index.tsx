@@ -79,7 +79,7 @@ export default function () {
         <Tabs.TabPane tab="看板" key="1"></Tabs.TabPane>
         <Tabs.TabPane tab="列表" key="2"></Tabs.TabPane>
       </Tabs>
-      <div className="flex-1 flex overflow-hidden pb-5">
+      <div className="flex-1 flex overflow-y-hidden overflow-x-auto pb-5">
         {currentTab === "1" ? (
           <Kanban data={data} onRefresh={fetchList} />
         ) : (

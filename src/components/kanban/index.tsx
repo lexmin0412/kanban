@@ -4,7 +4,7 @@ import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {Tag, Modal, Form, Input, DatePicker} from "antd";
 import dayjs from "dayjs";
 import {useEffect, useState} from "react";
-import {DndAnythingMultiple} from "react-dnd-anything";
+import {DndAnythingMultiple} from 'react-dnd-anything';
 
 interface KanbanProps {
   data: DataList;
@@ -26,6 +26,7 @@ export default (props: KanbanProps) => {
       props.data?.map((item) => {
         return {
           id: item.id,
+					title: item.title,
           list: item.items,
         };
       })
@@ -51,6 +52,18 @@ export default (props: KanbanProps) => {
         }}
         wrapperClassName="flex items-start h-full"
         containerClassName="w-72 mr-4 bg-[#F4F5F7] rounded-xl h-full overflow-auto border-box"
+        renderGroup={(groupContent, options) => {
+          return (
+            <div>
+              {options.group.title ? (
+                <div className=" h-6 leading-6 text-lg border-l-4 border-blue-600 border-solid border-y-0 border-r-0 mb-2 pl-2">
+                  {options.group.title}
+                </div>
+              ) : null}
+              {groupContent}
+            </div>
+          );
+        }}
         renderChildren={(item) => {
           return (
             <div
@@ -61,7 +74,9 @@ export default (props: KanbanProps) => {
                 form.setFieldsValue({
                   title: item.title,
                   description: item.description,
-                  expected_end_at: item.expected_end_at ? dayjs(item.expected_end_at) : undefined,
+                  expected_end_at: item.expected_end_at
+                    ? dayjs(item.expected_end_at)
+                    : undefined,
                   // expected_end_at: item.expected_end_at ? dayjs(item.expected_end_at) : undefined,
                 });
               }}
@@ -136,7 +151,9 @@ export default (props: KanbanProps) => {
           await ossClient?.updateItem({
             id: currentItem?.id,
             ...form.getFieldsValue(),
-						expected_end_at: dayjs(form.getFieldsValue().expected_end_at).format("YYYY-MM-DD"),
+            expected_end_at: dayjs(
+              form.getFieldsValue().expected_end_at
+            ).format("YYYY-MM-DD"),
           });
           console.log("成功了");
           handleCloseModal();
